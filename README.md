@@ -17,6 +17,10 @@ Entre le simple timer et le cycle, Mori offre le choix de ses deux options pour 
 ___
 ## Technologies utilisées :
 
+- HTML
+- CSS
+- JS
+- Electron.js
 ___
 ## Installation :
 
