@@ -1,0 +1,35 @@
+* {
+	margin: 0;
+	padding: 0;
+	background-color: #fef3cd;
+}
+.pomodoro {
+	width: 100vw;
+	height: 100vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.timeContainer {
+	background-color: #ffcccc;
+	width: 25vw;
+	height: 300px;
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+}
+.timer {
+	font-size: 36px;
+	font-family: fantasy;
+	display: flex;
+	gap: 5px;
+}
+.startPause {
+	width: 100px;
+	height: 30px;
+}
+.toTimer {
+	display: flex;
+	flex-direction: column;
+}

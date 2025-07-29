@@ -1,0 +1,15 @@
+{
+  "name": "mori",
+  "version": "1.0.0",
+  "description": "Mori est une application toute simple reprenant le système pomodoro afin de timer son temps de travaille. D'abord coder à partir d'un simple timer sur CodePen, Mori prend petit à petit vie pour devenir une appli sur desktop.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^37.2.4"
+  }
+}
