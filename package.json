@@ -20,6 +20,7 @@
   "build": {
     "appId": "com.mori.pomodoro",
     "productName": "Mori",
+    "icon": "mori_icon.ico",
     "directories": {
       "output": "dist"
     },
@@ -27,8 +28,7 @@
       "**/*"
     ],
     "win": {
-      "target": "nsis",
-      "icon": "icon.ico"
+      "target": "nsis"
     }
   }
 }
