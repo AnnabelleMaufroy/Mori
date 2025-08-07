@@ -28,7 +28,12 @@ let editing = false;
 let isCycle = false;
 let isPause = false;
 
+if (Notification.permission !== "granted") {
+  Notification.requestPermission();
+}
+
 cycleButton.addEventListener('click', () => {
+	buttonStartPause.innerHTML = '<i class="fa-solid fa-play"></i> <i class="fa-solid fa-pause"></i>';
 	nextTimer.style.display = 'flex';
 	cycleText.style.display ='flex';
 	cycleText.textContent ='Work';
@@ -53,6 +58,7 @@ cycleButton.addEventListener('click', () => {
 });
 
 timerButton.addEventListener('click', () => {
+	buttonStartPause.innerHTML = '<i class="fa-solid fa-play"></i> <i class="fa-solid fa-pause"></i>';
 	nextTimer.style.display = 'none';
 	cycleText.style.display ='none';
 	isCycle = false;
@@ -140,7 +146,7 @@ function startTimer() {
 	if (start) {
 		if (restart) {
 			min = minMemory;
-			sec = 0;
+			sec = secMemory;
 			buttonStartPause.innerHTML = '<i class="fa-solid fa-play"></i> <i class="fa-solid fa-pause"></i>';
 			restart = false;
 		}
@@ -154,6 +160,7 @@ function timerFunction() {
 	if (sec === 0 && min === 0) {
 		clearInterval(interval);
 		interval = null;
+		notifyTimerEnd();
 
 		if (isCycle) {
 			const tempMin = minMemory;
@@ -200,11 +207,29 @@ function displayTimer() {
 	secondesNext.textContent = formatTime(secNext);
 	minutesNext.textContent = formatTime(minNext);
 }
-function displayText(){
-	if(isPause){
-		cycleText.textContent ='Pause';
-	}else{
-		cycleText.textContent ='Work';
-	}
+function displayText() {
+	const newText = isPause ? 'Pause' : 'Work';
+	cycleText.classList.add('text-exit');
+	setTimeout(() => {
+		cycleText.textContent = newText;
+		cycleText.classList.remove('text-exit');
+		cycleText.classList.add('text-enter');
+		void cycleText.offsetWidth;
+		cycleText.classList.add('text-enter-active');
+		setTimeout(() => {
+			cycleText.classList.remove('text-enter');
+			cycleText.classList.remove('text-enter-active');
+		}, 400);
+	}, 400);
+}
+
+function notifyTimerEnd() {
+  new Notification("Timer terminé !", {
+    body: isCycle ? (isPause ? "Fin de la pause. Retour au travail !" : "Temps de travail terminé. Faisons une pause !") : "Temps écoulé.",
+    icon: "mori.png",
+  });
+
+  const audio = new Audio("ding.mp3");
+  audio.play();
 }
 
