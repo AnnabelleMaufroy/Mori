@@ -6,13 +6,14 @@ function createWindow() {
     width: 400,
     height: 500,
     resizable: false,
+    icon: path.join(__dirname, 'mori_icon.ico'),
     webPreferences: {
       preload: path.join(__dirname, 'renderer.js'),
     },
   });
 
   win.loadFile('index.html');
-//   win.removeMenu();
+  //win.removeMenu();
 }
 
 app.whenReady().then(createWindow);

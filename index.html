@@ -11,19 +11,32 @@
 <body>
     <main>
         <div class="timeContainer">
-            <div class="timer">
-                <div class="minutes"></div>
-                <span>:</span>
-                <div class="secondes"></div>
-                <div class="toTimer">
-                    <button class="addToTimer">+</button>
-                    <button class="removeToTimer">-</button>
+            <span class="cycleText"></span>
+            <img class="moriImg" src="mori.png" alt="image of Mori the mascot">
+            <div class="timerArea">
+                <div class="timer">
+                    <div class="minutes"></div>
+                    <span>:</span>
+                    <div class="secondes"></div>
                 </div>
+                <div class="nextTimer">
+                    <div class="minutesNext"></div>
+                    <span>:</span>
+                    <div class="secondesNext"></div>
+                </div>
+            </div>
+            <div class="toTimer">
+                <button class="addToTimer">+</button>
+                <button class="removeToTimer">-</button>
             </div>
             <button class="startPause">
                 <i class="fa-solid fa-play"></i>
                 <i class="fa-solid fa-pause"></i>
             </button>
+        </div>
+        <div class="buttonSwitch">
+            <button class="timerButton"><i class="fa-solid fa-hourglass"></i> Timer </button>
+            <button class="cycleButton"><i class="fa-solid fa-spinner"></i> Cycle </button>
         </div>
     </main>
 </body>
