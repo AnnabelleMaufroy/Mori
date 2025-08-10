@@ -5,8 +5,8 @@
 Initialement créé comme un simple minuteur sur CodePen, **Mori** prend désormais la forme d’une véritable application bureau grâce à **Electron.js**.
 
 <div style="display: flex; gap: 10px;">
-  <img src="https://imgur.com/1aAR8l6" alt="Mori" style="width: 300px;">
-  <img src="https://imgur.com/GorXInv" alt="Mori2" style="width: 300px;">
+  <img src="https://i.imgur.com/1aAR8l6.png" alt="Mori" style="width: 300px;">
+  <img src="https://i.imgur.com/GorXInv.png" alt="Mori2" style="width: 300px;">
 </div>
 
 ---
