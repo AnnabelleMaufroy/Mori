@@ -10,16 +10,17 @@ const nextTimer = document.querySelector('.nextTimer');
 const cycleButton = document.querySelector('.cycleButton');
 const timerButton = document.querySelector('.timerButton');
 const cycleText = document.querySelector('.cycleText');
+
 let min = 25;
 let sec = 0;
-let minNext =5;
-let secNext =0;
+let minNext = 5;
+let secNext = 0;
 let minMemory = 25;
 let secMemory = 0;
-let nextMinMemory= 5;
-let nextSecMemory =0;
+let nextMinMemory = 5;
+let nextSecMemory = 0;
+
 let start = false;
-displayTimer();
 let interval = null;
 let restart = false;
 let inputMinutes = null;
@@ -27,6 +28,9 @@ let inputSecondes = null;
 let editing = false;
 let isCycle = false;
 let isPause = false;
+let endTime = null;
+
+displayTimer();
 
 if (Notification.permission !== "granted") {
   Notification.requestPermission();
@@ -35,10 +39,10 @@ if (Notification.permission !== "granted") {
 cycleButton.addEventListener('click', () => {
 	buttonStartPause.innerHTML = '<i class="fa-solid fa-play"></i> <i class="fa-solid fa-pause"></i>';
 	nextTimer.style.display = 'flex';
-	cycleText.style.display ='flex';
-	cycleText.textContent ='Work';
+	cycleText.style.display = 'flex';
+	cycleText.textContent = 'Work';
 	isCycle = true;
-	isPause =false;
+	isPause = false;
 
 	min = 25;
 	sec = 0;
@@ -46,11 +50,10 @@ cycleButton.addEventListener('click', () => {
 	secNext = 0;
 	minMemory = 25;
 	secMemory = 0;
-	nextMinMemory= 5;
+	nextMinMemory = 5;
 	nextSecMemory = 0;
 
-	resetEditingInputs()
-
+	resetEditingInputs();
 	displayTimer();
 	clearInterval(interval);
 	start = false;
@@ -60,22 +63,22 @@ cycleButton.addEventListener('click', () => {
 timerButton.addEventListener('click', () => {
 	buttonStartPause.innerHTML = '<i class="fa-solid fa-play"></i> <i class="fa-solid fa-pause"></i>';
 	nextTimer.style.display = 'none';
-	cycleText.style.display ='none';
+	cycleText.style.display = 'none';
 	isCycle = false;
-	isPause =false;
+	isPause = false;
 
 	min = 25;
 	sec = 0;
 	minMemory = 25;
 	secMemory = 0;
 
-	resetEditingInputs()
-
+	resetEditingInputs();
 	displayTimer();
 	clearInterval(interval);
 	start = false;
 	restart = false;
 });
+
 buttonStartPause.addEventListener("click", () => {
 	if (editing) {
 		const newMin = parseInt(inputMinutes.value, 10);
@@ -106,13 +109,15 @@ function resetEditingInputs() {
 		editing = false;
 	}
 }
+
 addToTimer.addEventListener("click", () => {
 	min += 5;
 	minMemory += 5;
 	displayTimer();
 });
+
 removeToTimer.addEventListener("click", () => {
-	if(min>4){
+	if (min > 4) {
 		min -= 5;
 		minMemory -= 5;
 		displayTimer();
@@ -129,9 +134,9 @@ timer.addEventListener("click", () => {
 	inputMinutes = document.createElement("input");
 	inputSecondes = document.createElement("input");
 	inputMinutes.setAttribute("type", "text");
-	inputMinutes.setAttribute('maxlength',2);
+	inputMinutes.setAttribute('maxlength', 2);
 	inputSecondes.setAttribute("type", "text");
-	inputSecondes.setAttribute('maxlength',2);
+	inputSecondes.setAttribute('maxlength', 2);
 	inputMinutes.classList.add("inputMinutes");
 	inputSecondes.classList.add("inputSecondes");
 	inputMinutes.value = currentMin;
@@ -141,7 +146,6 @@ timer.addEventListener("click", () => {
 	inputMinutes.focus();
 });
 
-
 function startTimer() {
 	if (start) {
 		if (restart) {
@@ -150,14 +154,22 @@ function startTimer() {
 			buttonStartPause.innerHTML = '<i class="fa-solid fa-play"></i> <i class="fa-solid fa-pause"></i>';
 			restart = false;
 		}
-		interval = setInterval(timerFunction, 1000);
+		endTime = Date.now() + ((min * 60) + sec) * 1000;
+		interval = setInterval(timerFunction, 200);
 	} else {
 		clearInterval(interval);
 		interval = null;
 	}
 }
+
 function timerFunction() {
-	if (sec === 0 && min === 0) {
+	const now = Date.now();
+	let remainingMs = endTime - now;
+
+	if (remainingMs <= 0) {
+		min = 0;
+		sec = 0;
+		displayTimer();
 		clearInterval(interval);
 		interval = null;
 		notifyTimerEnd();
@@ -167,7 +179,7 @@ function timerFunction() {
 			const tempSec = secMemory;
 			const tempMinNext = nextMinMemory;
 			const tempSecNext = nextSecMemory;
-			isPause =!isPause;
+			isPause = !isPause;
 
 			min = tempMinNext;
 			sec = tempSecNext;
@@ -189,24 +201,27 @@ function timerFunction() {
 			buttonStartPause.innerHTML = start ? 
 				'<i class="fa-solid fa-play"></i> <i class="fa-solid fa-pause"></i>' : '<i class="fa-solid fa-rotate-right"></i>';
 		}
-	} else if (sec === 0) {
-		min--;
-		sec = 59;
-	} else {
-		sec--;
+		return;
 	}
+
+	const totalSeconds = Math.floor(remainingMs / 1000);
+	min = Math.floor(totalSeconds / 60);
+	sec = totalSeconds % 60;
+
 	displayTimer();
 }
 
 function formatTime(value) {
 	return value < 10 ? "0" + value : value;
 }
+
 function displayTimer() {
 	secondes.textContent = formatTime(sec);
 	minutes.textContent = formatTime(min);
 	secondesNext.textContent = formatTime(secNext);
 	minutesNext.textContent = formatTime(minNext);
 }
+
 function displayText() {
 	const newText = isPause ? 'Pause' : 'Work';
 	cycleText.classList.add('text-exit');
@@ -224,12 +239,10 @@ function displayText() {
 }
 
 function notifyTimerEnd() {
-  new Notification("Timer terminé !", {
-    body: isCycle ? (isPause ? "Fin de la pause. Retour au travail !" : "Temps de travail terminé. Faisons une pause !") : "Temps écoulé.",
-    icon: "mori.png",
-  });
-
-  const audio = new Audio("ding.mp3");
-  audio.play();
+	new Notification("Timer terminé !", {
+		body: isCycle ? (isPause ? "Fin de la pause. Retour au travail !" : "Temps de travail terminé. Faisons une pause !") : "Temps écoulé.",
+		icon: "mori.png",
+	});
+	const audio = new Audio("ding.mp3");
+	audio.play();
 }
-
